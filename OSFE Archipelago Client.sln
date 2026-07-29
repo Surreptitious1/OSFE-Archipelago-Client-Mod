@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSFE Archipelago Client", "OSFE Archipelago Client.csproj", "{EFF2D5A5-D88A-447A-BC97-D8768B216AA9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EFF2D5A5-D88A-447A-BC97-D8768B216AA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFF2D5A5-D88A-447A-BC97-D8768B216AA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFF2D5A5-D88A-447A-BC97-D8768B216AA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFF2D5A5-D88A-447A-BC97-D8768B216AA9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
