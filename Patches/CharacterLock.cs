@@ -8,8 +8,6 @@ using UnityEngine;
 
 class CharacterLock
 {
-    private static string[] charnames = {"Saffron", "Shiso"};
-    
     [HarmonyPatch(typeof(HeroSelectCtrl))]
     [HarmonyPatch("CreateHeroButtons")]
     class CreateHeroButtonsPatch

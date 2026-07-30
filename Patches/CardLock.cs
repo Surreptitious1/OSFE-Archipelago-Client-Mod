@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class CardLock
 {
+    /* NOTE: Probably obviated by SetHeroItems patch
     // Replace locked cards in starting decks with jam
     [HarmonyPatch(typeof(SpawnCtrl))]
     [HarmonyPatch("CreateBeing")]
@@ -23,6 +24,25 @@ public class CardLock
                         beingObj.deck.RemoveAt(i);
                         beingObj.deck.Insert(i, "Jam");
                     }
+                }
+            }
+        }
+    }
+    */
+    
+    // Visually replace locked cards in character selection
+    [HarmonyPatch(typeof(HeroDisplay))]
+    [HarmonyPatch("SetHeroItems")]
+    class SetHeroItemsPatch
+    {
+        private static void Prefix(HeroDisplay __instance, ref BeingObject beingObj)
+        {
+            for (int i = 0; i < beingObj.deck.Count; i++)
+            {
+                if (!AP.I.unlocked_spells.Contains(beingObj.deck[i]))
+                {
+                    beingObj.deck.RemoveAt(i);
+                    beingObj.deck.Insert(i, "Jam");
                 }
             }
         }
@@ -78,7 +98,6 @@ public class CardLock
             }
         }
     }
-    
     
 }
 

@@ -444,6 +444,7 @@
         <Compile Include="ArchiNet.cs" />
         <Compile Include="ArchiState.cs" />
         <Compile Include="Init.cs" />
+        <Compile Include="Patches\BossMercy.cs" />
         <Compile Include="Patches\CardLock.cs" />
         <Compile Include="Patches\CharacterLock.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
