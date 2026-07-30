@@ -8,7 +8,7 @@
         <ProjectGuid>{EFF2D5A5-D88A-447A-BC97-D8768B216AA9}</ProjectGuid>
         <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>OSFE_Archipelago_Client</RootNamespace>
+        <RootNamespace>ArchipelagoClient</RootNamespace>
         <AssemblyName>OSFE_Archipelago_Client</AssemblyName>
         <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
@@ -23,9 +23,16 @@
         <WarningLevel>4</WarningLevel>
         <DebugSymbols>true</DebugSymbols>
     </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'OSFE Direct|AnyCPU' ">
+      <OutputPath>C:\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\StreamingAssets\Mods\osfe_archi</OutputPath>
+    </PropertyGroup>
     <ItemGroup>
         <Reference Include="0Harmony">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\0Harmony.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Archipelago.MultiClient.Net, Version=6.7.1.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>packages\Archipelago.MultiClient.Net.6.7.1\lib\net45\Archipelago.MultiClient.Net.dll</HintPath>
           <Private>False</Private>
         </Reference>
         <Reference Include="Assembly-CSharp">
@@ -34,109 +41,147 @@
         </Reference>
         <Reference Include="Assembly-CSharp-firstpass">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="com.rlabrecque.steamworks.net">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\com.rlabrecque.steamworks.net.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="E7.Introloop">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\E7.Introloop.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="GalaxyCSharp">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\GalaxyCSharp.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="Mono.Posix">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\Mono.Posix.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="Mono.Security">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\Mono.Security.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="mscorlib">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\mscorlib.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>packages\Archipelago.MultiClient.Net.6.7.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="Rewired_Core">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\Rewired_Core.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="Rewired_Windows">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\Rewired_Windows.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="Sirenix.OdinInspector.Attributes">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\Sirenix.OdinInspector.Attributes.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="Sirenix.OdinInspector.CompatibilityLayer">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\Sirenix.OdinInspector.CompatibilityLayer.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="Sirenix.Serialization">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\Sirenix.Serialization.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="Sirenix.Serialization.AOTGenerated">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\Sirenix.Serialization.AOTGenerated.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="Sirenix.Serialization.Config">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\Sirenix.Serialization.Config.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="Sirenix.Utilities">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\Sirenix.Utilities.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="SonicBloom.Koreo">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\SonicBloom.Koreo.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="SonyNP">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\SonyNP.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="SonyPS4CommonDialog">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\SonyPS4CommonDialog.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="SonyPS4SaveData">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\SonyPS4SaveData.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="System"/>
         <Reference Include="System.Configuration">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\System.Configuration.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="System.Core"/>
         <Reference Include="System.Data"/>
         <Reference Include="System.Drawing">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\System.Drawing.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="System.EnterpriseServices">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\System.EnterpriseServices.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="System.Net.Http">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\System.Net.Http.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="System.Numerics">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\System.Numerics.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="System.Runtime.Serialization">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\System.Runtime.Serialization.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="System.Security">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\System.Security.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="System.ServiceModel.Internals">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\System.ServiceModel.Internals.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="System.Transactions">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\System.Transactions.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="System.Xml"/>
         <Reference Include="System.Xml.Linq">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\System.Xml.Linq.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="TwitchLib.Unity">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\TwitchLib.Unity.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="Unity.Analytics.DataPrivacy">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\Unity.Analytics.DataPrivacy.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="Unity.Analytics.StandardEvents">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\Unity.Analytics.StandardEvents.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="Unity.Analytics.Tracker">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\Unity.Analytics.Tracker.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="Unity.TextMeshPro">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="UnityEngine">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\UnityEngine.dll</HintPath>
@@ -396,12 +441,16 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="ArchiNet.cs" />
         <Compile Include="ArchiState.cs" />
+        <Compile Include="Init.cs" />
+        <Compile Include="Patches\CardLock.cs" />
         <Compile Include="Patches\CharacterLock.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
     </ItemGroup>
     <ItemGroup>
       <None Include="App.config" />
+      <None Include="packages.config" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

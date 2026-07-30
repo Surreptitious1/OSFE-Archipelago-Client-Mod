@@ -14,6 +14,7 @@ class CharacterLock
     [HarmonyPatch("CreateHeroButtons")]
     class CreateHeroButtonsPatch
     {
+        // Essentially reimplements HeroSelectCtrl::CreateHeroButtons with logic to omit locked heroes
         private static bool Prefix(HeroSelectCtrl __instance)
         {
             {
