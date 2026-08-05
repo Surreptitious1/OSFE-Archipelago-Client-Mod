@@ -26,6 +26,9 @@
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'OSFE Direct|AnyCPU' ">
       <OutputPath>C:\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\StreamingAssets\Mods\osfe_archi</OutputPath>
     </PropertyGroup>
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="Script\Fixup.bat"/>
+    </Target>
     <ItemGroup>
         <Reference Include="0Harmony">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\0Harmony.dll</HintPath>
@@ -33,7 +36,6 @@
         </Reference>
         <Reference Include="Archipelago.MultiClient.Net, Version=6.7.1.0, Culture=neutral, processorArchitecture=MSIL">
           <HintPath>packages\Archipelago.MultiClient.Net.6.7.1\lib\net45\Archipelago.MultiClient.Net.dll</HintPath>
-          <Private>False</Private>
         </Reference>
         <Reference Include="Assembly-CSharp">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\Assembly-CSharp.dll</HintPath>
@@ -69,7 +71,6 @@
         </Reference>
         <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, processorArchitecture=MSIL">
           <HintPath>packages\Archipelago.MultiClient.Net.6.7.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-          <Private>False</Private>
         </Reference>
         <Reference Include="Rewired_Core">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\One Step From Eden\OSFE_Data\Managed\Rewired_Core.dll</HintPath>
@@ -447,11 +448,16 @@
         <Compile Include="Patches\BossMercy.cs" />
         <Compile Include="Patches\CardLock.cs" />
         <Compile Include="Patches\CharacterLock.cs" />
+        <Compile Include="Patches\RunTracking.cs" />
+        <Compile Include="Patches\CustomUI.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
     </ItemGroup>
     <ItemGroup>
       <None Include="App.config" />
       <None Include="packages.config" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="Script\Fixup.bat" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

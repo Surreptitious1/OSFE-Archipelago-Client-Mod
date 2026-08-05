@@ -11,6 +11,7 @@ namespace ArchipelagoClient
         {
             Debug.Log("Archi Installed");
             //TODO: duplicate install prevention
+            //TODO: dllimport MultiClient
         }
     }
     
