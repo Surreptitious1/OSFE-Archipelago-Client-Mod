@@ -1,4 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Collections;
+using System.Runtime.CompilerServices;
 using Archipelago.MultiClient.Net;
 using ArchipelagoClient;
 using HarmonyLib;
@@ -8,12 +10,14 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 
 public class ArchiConfig
 {
     private static readonly object initlock = new object();
-    public bool ui_initialized = false;
+    public bool settings_ui_initialized = false;
+    public bool mainmenu_ui_initialized = false;
     
     public TMP_InputField hostname_field = null;
     public TMP_InputField port_field = null;
@@ -24,12 +28,13 @@ public class ArchiConfig
     {
         get
         {
-            if (!ui_initialized) { return ""; }
-            return hostname_field.text != "" ?  hostname_field.text : "archipelago.gg";
+            String defaultHostname = "archipelago.gg";
+            if (!settings_ui_initialized) { return SaveDataCtrl.Get("ArchiConfig.hostname", defaultHostname); }
+            return hostname_field.text != "" ?  hostname_field.text : SaveDataCtrl.Get("ArchiConfig.hostname", defaultHostname);
         }
         set
         {
-            if (!ui_initialized) { return; }
+            if (!settings_ui_initialized) { return; }
             hostname_field.text = value;
         }
     }
@@ -37,12 +42,13 @@ public class ArchiConfig
     {
         get
         {
-            if (!ui_initialized) { return ""; }
-            return port_field.text != "" ?  port_field.text : "38281";
+            String defaultPort = "38281";
+            if (!settings_ui_initialized) { return SaveDataCtrl.Get("ArchiConfig.port", defaultPort); }
+            return port_field.text != "" ?  port_field.text : SaveDataCtrl.Get("ArchiConfig.port", defaultPort);
         }
         set
         {
-            if (!ui_initialized) { return; }
+            if (!settings_ui_initialized) { return; }
             port_field.text = value;
         }
     }
@@ -50,12 +56,12 @@ public class ArchiConfig
     {
         get
         {
-            if (!ui_initialized) { return ""; }
-            return slotname_field.text;
+            if (!settings_ui_initialized) { return SaveDataCtrl.Get("ArchiConfig.slotname", ""); }
+            return slotname_field.text != "" ?  slotname_field.text : SaveDataCtrl.Get("ArchiConfig.slotname", "");
         }
         set
         {
-            if (!ui_initialized) { return; }
+            if (!settings_ui_initialized) { return; }
             slotname_field.text = value;
         }
     }
@@ -63,12 +69,13 @@ public class ArchiConfig
     {
         get
         {
-            if (!ui_initialized) { return ""; }
-            return password_field.text;
+            if (!settings_ui_initialized) { return SaveDataCtrl.Get("ArchiConfig.password", ""); }
+
+            return password_field.text != "" ? password_field.text : SaveDataCtrl.Get("ArchiConfig.password", "");
         }
         set
         {
-            if (!ui_initialized) { return; }
+            if (!settings_ui_initialized) { return; }
             password_field.text = value;
         }
     } 
@@ -108,12 +115,12 @@ public class UIPatches
 
         public static void Prefix(OptionCtrl __instance)
         {
-            if (ArchiConfig.I.ui_initialized)
+            if (ArchiConfig.I.settings_ui_initialized)
             {
                 return;
             }
 
-            Debug.Log("Initializing UI");
+            Debug.Log("Initializing Settings UI");
             var settingsBtn = Object.Instantiate(__instance.navButtonGrid.GetChild(1), __instance.navButtonGrid);
             settingsBtn.GetComponent<UIButton>().tmpText.text = "ARCHIPELAGO";
             settingsBtn.GetChild(0).GetComponent<I2.Loc.Localize>().Term = "ARCHIPELAGO";
@@ -223,29 +230,14 @@ public class UIPatches
                 return tmpInputField;
             }
 
-            ArchiConfig.I.hostname_field = CreateTextField("Server", "archipelago.gg");
-            ArchiConfig.I.port_field = CreateTextField("Port", "38281");
-            ArchiConfig.I.slotname_field = CreateTextField("Slot Name");
-            ArchiConfig.I.password_field = CreateTextField("Password");
-            ArchiConfig.I.ui_initialized = true;
+            ArchiConfig.I.hostname_field = CreateTextField("Server", SaveDataCtrl.Get("ArchiConfig.hostname", "archipelago.gg"));
+            ArchiConfig.I.port_field = CreateTextField("Port", SaveDataCtrl.Get("ArchiConfig.port", "38281"));
+            ArchiConfig.I.slotname_field = CreateTextField("Slot Name", SaveDataCtrl.Get("ArchiConfig.slotname", ""));
+            ArchiConfig.I.password_field = CreateTextField("Password", SaveDataCtrl.Get("ArchiConfig.password", ""));
+            ArchiConfig.I.settings_ui_initialized = true;
 
             Debug.Log("UI Init Success");
         }
-
-        /*
-        [HarmonyPatch(typeof(NavTextfield))]
-        [HarmonyPatch(nameof(NavTextfield.OnEndEdit))]
-        [HarmonyPostfix]
-        private static void NavFieldEndExitSave(NavTextfield __instance)
-        {
-            if (__instance.name.StartsWith("ArchiCustom"))
-            {
-                // TODO: Persistent storage of user fields
-                return;
-            }
-        }
-        */
-
     }
 
     [HarmonyPatch(typeof(MainCtrl))]
@@ -254,40 +246,104 @@ public class UIPatches
     {
         public static void Prefix(MainCtrl __instance)
         {
-            __instance.soloButton.tmpText.text = "ARCHIPELAGO";
-            // UnityEventBase::RemoveAllListeners() does not work, so completely replace the event
-            __instance.soloButton.GetComponent<Button>().onClick = new Button.ButtonClickedEvent();
-            __instance.soloButton.GetComponent<Button>().onClick.AddListener(() =>
+            void EnableButton(NavButton btn)
             {
-                Debug.Log("Running Custom Button Handler");
-                if (ArchiConfig.I.hostname == "" || ArchiConfig.I.port == "" || ArchiConfig.I.slotname == "")
+                btn.gameObject.SetActive(true);
+                btn.GetComponent<Animator>().SetBool("visible", true);
+            }
+            
+            if (ArchiConfig.I.mainmenu_ui_initialized)
+            {
+                return;
+            } 
+            
+            Debug.Log("Initializing Main Menu UI");
+            
+            IEnumerator enumerator = (IEnumerator) __instance.mainMenuLeftButtonGrid.GetEnumerator();
+            Transform child;
+            try
+            {
+                while (enumerator.MoveNext())
                 {
-                    if (!ArchiConfig.I.ui_initialized) { OptionCtrlOpenPatch.Prefix(__instance.ctrl.optCtrl); } 
-                    S.I.optCtrl.Open();
-                    S.I.optCtrl.OpenPanel(archiSettingsPane.GetComponent<NavPanel>());
-                    S.I.heCtrl.Close();
-                    return;
+                    child = (Transform) enumerator.Current;
+                    if (child) child.GetComponentInChildren<NavButton>().gameObject.SetActive(false);
                 }
+            }
+            finally
+            {
+                if (enumerator is IDisposable disposable)
+                    disposable.Dispose();
+            }
 
-                // TODO: this fails to display due to Connect() blocking
-                __instance.soloButton.tmpText.text = "CONNECTING...";
-                bool success = ArchiNet.I.Connect(ArchiConfig.I.hostname + ":" + ArchiConfig.I.port,
-                    ArchiConfig.I.slotname);
-                if (!success)
-                {
-                    __instance.soloButton.tmpText.text = "FAILED TO CONNECT";
-                    return;
-                }
+            EnableButton(__instance.libraryButton);
+            EnableButton(__instance.optionButton);
+            EnableButton(__instance.quitButton);
+            
+            var archiBtn = Object.Instantiate(__instance.mainMenuLeftButtonGrid.GetChild(6), __instance.mainMenuLeftButtonGrid);
+            var archiUIBtn = archiBtn.GetComponent<UIButton>();
+            archiUIBtn.tmpText.text = "CONNECT";
+            archiBtn.GetChild(0).GetComponent<I2.Loc.Localize>().Term = "CONNECT";
+            archiBtn.SetSiblingIndex(2);
+            archiBtn.GetComponent<Animator>().SetBool("visible", true);
+            
+            
+            Object.DestroyImmediate(archiBtn.GetComponent<Button>());
+            {
+                EventTrigger.Entry entry = new EventTrigger.Entry();
+                entry.eventID = EventTriggerType.PointerClick;
+                entry.callback.AddListener((data) => {
+                    if (ArchiConfig.I.hostname == "" || ArchiConfig.I.port == "" || ArchiConfig.I.slotname == "")
+                    {
+                        if (!ArchiConfig.I.settings_ui_initialized) { OptionCtrlOpenPatch.Prefix(__instance.ctrl.optCtrl); } 
+                        S.I.optCtrl.Open();
+                        S.I.optCtrl.OpenPanel(archiSettingsPane.GetComponent<NavPanel>());
+                        S.I.heCtrl.Close();
+                        return;
+                    }
 
-                if (__instance.runCtrl.loadedRun != null)
-                {
-                    __instance.ClickContinueRun();
-                }
-                else
-                {
-                    __instance.OpenPanelSingpleplayer(__instance.heCtrl);
-                }
-            });
+                    if (ArchiNet.I.session != null)
+                    {
+                        return; // Already connected
+                    }
+                    // TODO: this fails to display due to Connect() blocking
+                   archiUIBtn.tmpText.text = "CONNECTING...";
+                    bool success = ArchiNet.I.Connect(ArchiConfig.I.hostname + ":" + ArchiConfig.I.port,
+                        ArchiConfig.I.slotname);
+                    if (!success)
+                    {
+                        archiUIBtn.tmpText.text = "FAILED TO CONNECT";
+                        return;
+                    }
+                    archiUIBtn.tmpText.text = "CONNECTED";
+                    EnableButton(__instance.soloButton);
+                    if (__instance.runCtrl.LoadedRunExists())
+                    {
+                        EnableButton(__instance.continueButton);
+                    }
+                    
+                    SaveDataCtrl.Set("ArchiConfig.hostname", ArchiConfig.I.hostname);
+                    SaveDataCtrl.Set("ArchiConfig.port", ArchiConfig.I.port);
+                    SaveDataCtrl.Set("ArchiConfig.slotname", ArchiConfig.I.slotname);
+                    SaveDataCtrl.Set("ArchiConfig.password", ArchiConfig.I.password);
+
+                    /*
+                    if (__instance.runCtrl.loadedRun != null)
+                    {
+                        __instance.ClickContinueRun();
+                    }
+                    else
+                    {
+                        __instance.OpenPanelSingpleplayer(__instance.heCtrl);
+                    }
+                    */
+                });
+                EventTrigger trigger = archiBtn.gameObject.AddComponent<EventTrigger>();
+                trigger.triggers.Add(entry);
+                trigger.enabled = false;
+            }
+            //archiBtn.GetComponent<Button>().onClick = new Button.ButtonClickedEvent();
+
+            ArchiConfig.I.mainmenu_ui_initialized = true;
         }
     }
 }

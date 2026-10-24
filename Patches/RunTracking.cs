@@ -21,9 +21,17 @@ public class RunTracking
     {
         private static void Prefix(RunCtrl __instance)
         {
-            // TODO: send location pings to AP state tracking
-            //__instance.currentRun.zoneIndex
-            //__instance.currentRun.worldTierNum
+            int zone = __instance.currentRun.zoneNum;
+            int world = __instance.currentRun.worldTierNum + 1;
+            int eden_id = 8 + (AP.I.current_char?.Name == "Shopkeeper" ? 1 : 0);
+            if (world == eden_id)
+            {
+                ArchiNet.I.SendLocation($"[{AP.I.current_char.ToString()}] Eden, Zone {zone}");
+            }
+            else
+            {
+                ArchiNet.I.SendLocation($"[{AP.I.current_char.ToString()}] World {world}, Zone {zone}");
+            }
         }
     }
 }

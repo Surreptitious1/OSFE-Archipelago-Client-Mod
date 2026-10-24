@@ -444,12 +444,15 @@
     <ItemGroup>
         <Compile Include="ArchiNet.cs" />
         <Compile Include="ArchiState.cs" />
+        <Compile Include="Data\HeroKit.cs" />
+        <Compile Include="Data\Spell.cs" />
         <Compile Include="Init.cs" />
         <Compile Include="Patches\BossMercy.cs" />
         <Compile Include="Patches\CardLock.cs" />
         <Compile Include="Patches\CharacterLock.cs" />
         <Compile Include="Patches\RunTracking.cs" />
         <Compile Include="Patches\CustomUI.cs" />
+        <Compile Include="Patches\SaveProfile.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
     </ItemGroup>
     <ItemGroup>

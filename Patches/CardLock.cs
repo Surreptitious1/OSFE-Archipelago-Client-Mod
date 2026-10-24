@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using ArchipelagoClient;
+using ArchipelagoClient.Data;
 using HarmonyLib;
 using UnityEngine;
 
@@ -30,19 +31,30 @@ public class CardLock
     }
     */
     
-    // Visually replace locked cards in character selection
+    // Replace cards at character selection time
     [HarmonyPatch(typeof(HeroDisplay))]
     [HarmonyPatch("SetHeroItems")]
     class SetHeroItemsPatch
     {
         private static void Prefix(HeroDisplay __instance, ref BeingObject beingObj)
         {
+            // Replace the default deck with the randomized one
+            beingObj.deck.Clear();
+            var kit = HeroKitLookup.OSFEBeingIdToHeroKit[beingObj.beingID];
+            if (AP.I.custom_spells.ContainsKey(kit))
+            {
+                foreach (var spell in AP.I.custom_spells[kit])
+                {
+                    beingObj.deck.Add(spell);
+                }
+            }
+
+            // TODO: instead of jams, replace locked spells with something custom
             for (int i = 0; i < beingObj.deck.Count; i++)
             {
                 if (!AP.I.unlocked_spells.Contains(beingObj.deck[i]))
                 {
-                    beingObj.deck.RemoveAt(i);
-                    beingObj.deck.Insert(i, "Jam");
+                    beingObj.deck[i] = "Jam";
                 }
             }
         }

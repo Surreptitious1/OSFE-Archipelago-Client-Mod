@@ -1,4 +1,5 @@
-﻿using ArchipelagoClient;
+﻿using System;
+using ArchipelagoClient;
 using HarmonyLib;
 using UnityEngine;
 
@@ -11,9 +12,8 @@ public class BossMercy
         public static void Prefix(Boss __instance)
         {
             string name = __instance.bossID.Substring(4); // ID is prefixed with "Boss"
-            Debug.Log("Spared " + name);
-            if (!AP.I.boss_spares.Contains(name))
-                AP.I.boss_spares.Add(name);
+            //Debug.Log("Spared " + name);
+            ArchiNet.I.SendLocation($"[{AP.I.current_char.ToString()}] Spare {name}");
         }
     }
     
@@ -24,9 +24,8 @@ public class BossMercy
         public static void Prefix(Boss __instance)
         {
             string name = __instance.bossID.Substring(4); // ID is prefixed with "Boss"
-            Debug.Log("Executed " + name);
-            if (!AP.I.boss_kills.Contains(name))
-                AP.I.boss_kills.Add(name);
+            //Debug.Log("Executed " + name);
+            ArchiNet.I.SendLocation($"[{AP.I.current_char.ToString()}] Kill {name}");
         }
     }
 }
