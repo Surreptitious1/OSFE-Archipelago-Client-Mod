@@ -450,6 +450,7 @@
         <Compile Include="Patches\BossMercy.cs" />
         <Compile Include="Patches\CardLock.cs" />
         <Compile Include="Patches\CharacterLock.cs" />
+        <Compile Include="Patches\CustomItems.cs" />
         <Compile Include="Patches\RunTracking.cs" />
         <Compile Include="Patches\CustomUI.cs" />
         <Compile Include="Patches\SaveProfile.cs" />

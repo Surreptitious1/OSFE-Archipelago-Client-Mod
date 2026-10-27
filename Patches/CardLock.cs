@@ -49,14 +49,17 @@ public class CardLock
                 }
             }
 
+            /*
             // TODO: instead of jams, replace locked spells with something custom
             for (int i = 0; i < beingObj.deck.Count; i++)
             {
                 if (!AP.I.unlocked_spells.Contains(beingObj.deck[i]))
                 {
-                    beingObj.deck[i] = "Jam";
+                    beingObj.deck[i] = "[LOCKED] " + beingObj.deck[i];
+                    Debug.Log("CardLock: " + beingObj.deck[i]);
                 }
             }
+            */
         }
     }
 
@@ -92,6 +95,7 @@ public class CardLock
     }
     */
         
+    /*
     // Replace locked cards in rewards with jam
     [HarmonyPatch(typeof(ItemManager))]
     [HarmonyPatch("GetItems")]
@@ -102,14 +106,14 @@ public class CardLock
             for (int i = 0; i < __result.Count; i++)
             {
                 ItemObject obj =  __result[i];
-                if (obj.type == ItemType.Spell && !AP.I.unlocked_spells.Contains(obj.nameString))
+                if (obj.type == ItemType.Spell && !AP.I.unlocked_spells.Contains(obj.shortName))
                 {
-                    __result.RemoveAt(i);
-                    __result.Insert(i, __instance.spellDictionary["Jam"].Clone());
+                    __result[i] = __instance.spellDictionary["[LOCKED] " + obj.shortName];
                 }
             }
         }
     }
+    */
     
 }
 

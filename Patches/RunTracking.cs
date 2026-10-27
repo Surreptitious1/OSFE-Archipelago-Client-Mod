@@ -32,6 +32,7 @@ public class RunTracking
             {
                 ArchiNet.I.SendLocation($"[{AP.I.current_char.ToString()}] World {world}, Zone {zone}");
             }
+            AP.I.FixupCurrentDeck();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using HarmonyLib;
+﻿using ArchipelagoClient.Data;
+using ArchipelagoClient.Patches;
+using HarmonyLib;
 using Kittehface.Framework20;
 using UnityEngine;
 
@@ -18,11 +20,13 @@ namespace ArchipelagoClient
                     Debug.Log(id.beingID);
                 }
             }
+            SaveDataCtrl.Set<int>("UnlockLevel", 50);
             S.I.unCtrl.UnlockAll();
             //TODO: duplicate install prevention
             //TODO: dllimport MultiClient
             Debug.Log("Archi Installed");
         }
+
     }
     
     

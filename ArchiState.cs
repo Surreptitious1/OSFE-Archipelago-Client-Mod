@@ -26,6 +26,8 @@ namespace ArchipelagoClient {
 
         private Dictionary<string, object> slotData = null;
         public Dictionary<HeroKit, List<string>> custom_spells = new Dictionary<HeroKit, List<string>>();
+        
+        public Dictionary<string, SpellObject> original_spells = new Dictionary<string, SpellObject>();
 
         public HeroKit? current_char = null;
         public bool in_run = false; // Refers to OSFE run, not an Archipelago run
@@ -54,6 +56,11 @@ namespace ArchipelagoClient {
                     return _AP;
                 }
             }
+        }
+
+        public bool SpellUnlocked(string spell)
+        {
+            return unlocked_spells.Contains(spell);
         }
 
         public void StartRun(RunCtrl runCtrl)
@@ -123,10 +130,56 @@ namespace ArchipelagoClient {
             unlocked_chars.Add(HeroKit.FromString(hero_str));
         }
 
+        public void FixupSpellLists()
+        {
+            S.I.itemMan.playerFullSpellList = S.I.itemMan.spellDictionary.Values.Where<SpellObject>((Func<SpellObject, bool>) (t => t.tags.Contains(Tag.Player))).ToList<SpellObject>();
+            S.I.itemMan.playerSpellList = S.I.itemMan.playerFullSpellList.ToList(); // skip the unlock level filter
+            S.I.itemMan.unobtainedPlayerSpellList = new List<SpellObject>((IEnumerable<SpellObject>) S.I.itemMan.playerSpellList);
+        }
+
+        // MUST be called from a hook (Unity "main thread"), NOT from the multiworld server's callback
+        public void FixupCurrentDeck()
+        {
+            if (in_run)
+            {
+                foreach (var disk in S.I.deCtrl.duelDisks)
+                {
+                    List<ListCard> spells = new List<ListCard>();
+                    // Don't mutate the deck before getting all its values
+                    foreach (var spell in disk.deck)
+                    {
+                        spells.Add(spell);
+                    }
+                    int i = 0;
+                    foreach (var owned_spell in spells) {
+                        Debug.Log("FSL: " + owned_spell.spellObj.itemID);
+                        S.I.itemMan.unobtainedPlayerSpellList.Remove(owned_spell.spellObj);
+                        // TODO: keep an eye on this if performance gets problematic
+                        if (owned_spell.spellObj.nameString.StartsWith("[LOCKED]") && 
+                            unlocked_spells.Contains(owned_spell.spellObj.itemID))
+                        {
+                            S.I.deCtrl.RemoveCardFromDeck(owned_spell, false);
+                            S.I.deCtrl.CreateSpellCard(original_spells[owned_spell.spellObj.itemID],
+                                S.I.deCtrl.deckScreen.deckGrid, i, disk);
+                        }
+
+                        i++;
+                    }
+                }
+            }
+        }
+
+        private void UnlockSpell(String spell)
+        {
+            unlocked_spells.Add(spell);
+            S.I.itemMan.spellDictionary[spell] = original_spells[spell];
+        }
+
         private void UnlockCard(ItemInfo item)
         {
             String osfe_spell = SpellLookup.APSpelltoOSFESpell[item.ItemDisplayName];
-            unlocked_spells.Add(osfe_spell);
+            UnlockSpell(osfe_spell);
+            FixupSpellLists();
         }
 
         private void UnlockBrand(ItemInfo item)
@@ -135,8 +188,9 @@ namespace ArchipelagoClient {
             foreach (String ap_spell in ap_spells)
             {
                 String osfe_spell = SpellLookup.APSpelltoOSFESpell[ap_spell];
-                unlocked_spells.Add(osfe_spell);
+                UnlockSpell(osfe_spell);
             }
+            FixupSpellLists();
         }
         
         private void UnlockArtifact(ItemInfo item)
