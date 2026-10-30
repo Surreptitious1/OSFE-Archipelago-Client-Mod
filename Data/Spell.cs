@@ -6,7 +6,8 @@ namespace ArchipelagoClient.Data
 {
     public static class SpellLookup
     {
-        public static readonly Dictionary<string, string> APSpelltoOSFESpell = new Dictionary<string, string>()
+        // Map AP spell names to SpellObject itemIDs
+        public static readonly Dictionary<string, string> APSpellToOSFESpell = new Dictionary<string, string>()
         {
             // Anima
             { "Spell Card: Meltdown", "Meltdown" },
@@ -580,7 +581,7 @@ namespace ArchipelagoClient.Data
             "Spell Card: Bladeskrieg",
         };
 
-        public static readonly Dictionary<string, List<string>> APBrandtoAPSpells = new Dictionary<string, List<string>>()
+        public static readonly Dictionary<string, List<string>> APBrandToAPSpells = new Dictionary<string, List<string>>()
         {
             { "Brand Unlock: Anima", Anima },
             { "Brand Unlock: Convergence", Convergence },
@@ -594,424 +595,68 @@ namespace ArchipelagoClient.Data
             { "Brand Unlock: Slashfik", Slashfik },
         };
 
-
-        private static readonly List<string> AoE = new List<string>()
-        {
-            "Spell Card: EXPLOSION!",
-            "Spell Card: Pyroblast",
-            "Spell Card: Shotgun",
-            "Spell Card: Twinferno",
-        };
-        
-        private static readonly List<string> Beam = new List<string>()
-        {
-            "Spell Card: Hyper Beam",
-            "Spell Card: Infinity Beam",
-            "Spell Card: Shield Beam",
-            "Spell Card: Tractor Beam",
-        };
-        
-        private static readonly List<string> Blade = new List<string>()
-        {
-            "Spell Card: Bouncing Blade",
-            "Spell Card: Blackout",
-            "Spell Card: Blade Rain",
-            "Spell Card: Bladeskrieg",
-            "Spell Card: Excalibur",
-            "Spell Card: Kunai",
-            "Spell Card: Lifesword",
-            "Spell Card: Spirit Sword",
-            "Spell Card: Vivisection",
-        };
-        
-        private static readonly List<string> Chrono = new List<string>()
-        {
-            "Spell Card: Time Slow",
-            "Spell Card: Time Stop",
-            "Spell Card: Chrono Sphere",
-        };
-        
-        private static readonly List<string> Crack = new List<string>()
-        {
-            "Spell Card: Ambush",
-            "Spell Card: Cataclysm",
-            "Spell Card: Earth Wyrm",
-            "Spell Card: Excavate",
-            "Spell Card: Fissure",
-            "Spell Card: Holy Ground",
-            "Spell Card: Ion Cannon",
-            "Spell Card: Jackhammer",
-            "Spell Card: Orbital Beam",
-            "Spell Card: Prophecy",
-            "Spell Card: Ramjet",
-            "Spell Card: Tile Fire",
-        };
-        
-        private static readonly List<string> BigDeck = new List<string>()
-        {
-            "Spell Card: Deck Slam",
-            "Spell Card: Deck Shield",
-            "Spell Card: Gambit",
-            "Spell Card: Midnight",
-        };
-        
-        private static readonly List<string> Bouncy = new List<string>()
-        {
-            "Spell Card: Diag Beam",
-            "Spell Card: Ice Hockey",
-            "Spell Card: ZigZag",
-        };
-        
-        private static readonly List<string> Flame = new List<string>()
-        {
-            "Spell Card: Back Burner",
-            "Spell Card: Brushfire",
-            "Spell Card: Carpet Bomb",
-            "Spell Card: Combust",
-            "Spell Card: Ember",
-            "Spell Card: Firestorm",
-            "Spell Card: Firewall",
-            "Spell Card: Flamberge",
-            "Spell Card: Pekay Fire",
-            "Spell Card: Rage",
-            "Spell Card: Ring of Fire",
-            "Spell Card: Salamander",
-            "Spell Card: Wildfire",
-        };
-        
-        private static readonly List<string> Fling = new List<string>()
-        {
-            "Spell Card: Echo",
-            "Spell Card: Fling",
-            "Spell Card: Spell Shield",
-            "Spell Card: Switchbait",
-        };
-        
-        private static readonly List<string> Flow = new List<string>()
-        {
-            "Spell Card: Barrier",
-            "Spell Card: Coldstone",
-            "Spell Card: Earth Prayer",
-            "Spell Card: Earthen Armor",
-            "Spell Card: Eternity Cannon",
-            "Spell Card: Flint Shot",
-            "Spell Card: Fracture",
-            "Spell Card: Kinetic Wave",
-            "Spell Card: River",
-            "Spell Card: Rock Cycle",
-            "Spell Card: Rock Tomb",
-            "Spell Card: Tremor",
-            "Spell Card: Tsunami",
-            "Spell Card: Undertow",
-            "Spell Card: Waterfall",
-        };
-        
-        private static readonly List<string> Fragile = new List<string>()
-        {
-            "Spell Card: Entrench",
-            "Spell Card: Glassify",
-            "Spell Card: Ice Shield",
-            "Spell Card: Knife",
-            "Spell Card: Limit Break",
-            "Spell Card: Magic Claw",
-            "Spell Card: Showdown",
-        };
-        
-        private static readonly List<string> Frost = new List<string>()
-        {
-            "Spell Card: Blizzard",
-            "Spell Card: Cold Medicine",
-            "Spell Card: Cold Snap",
-            "Spell Card: Cryokinesis",
-            "Spell Card: Fimbulveter",
-            "Spell Card: Frost Barrage",
-            "Spell Card: Frostbite",
-            "Spell Card: Frost Bolt",
-            "Spell Card: Hailstorm",
-            "Spell Card: Ice Needle",
-            "Spell Card: Ice Spikes",
-            "Spell Card: Meltdown",
-            "Spell Card: Sunder",
-        };
-        
-        private static readonly List<string> Health = new List<string>()
-        {
-            "Spell Card: Cynet",
-            "Spell Card: Devour",
-            "Spell Card: Health Potion",
-            "Spell Card: Leech",
-            "Spell Card: Pinch",
-            "Spell Card: Rest",
-            "Spell Card: Revenge",
-            "Spell Card: Soul Link",
-        };
-        
-        private static readonly List<string> Indirect = new List<string>()
-        {
-            "Spell Card: Glitterbomb",
-            "Spell Card: Glitterstorm",
-            "Spell Card: Guillotine",
-            "Spell Card: Hellfire",
-            "Spell Card: Last Letter",
-            "Spell Card: Mini Thunder",
-            "Spell Card: Paragon",
-            "Spell Card: Ragnarok",
-            "Spell Card: Shine",
-            "Spell Card: Thunder",
-            "Spell Card: Thunderstorm",
-            "Spell Card: Whirl",
-        };
-        
-        private static readonly List<string> Invade = new List<string>()
-        {
-            "Spell Card: Breakout",
-            "Spell Card: Circuit",
-            "Spell Card: Crossfire",
-            "Spell Card: Fury",
-            "Spell Card: Step Pierce",
-            "Spell Card: Step Slash",
-            "Spell Card: Warpath",
-            "Spell Card: Zenith",
-        };
-        
-        private static readonly List<string> Jam = new List<string>()
-        {
-            "Spell Card: Innervate",
-            "Spell Card: Jam Cannon",
-            "Spell Card: Jam Shield",
-            "Spell Card: Jam Slam",
-            "Spell Card: Railgun",
-            "Spell Card: Salvo",
-            "Spell Card: Skewer",
-        };
-        
-        private static readonly List<string> Kunai = new List<string>()
-        {
-            "Spell Card: Counter Strike",
-            "Spell Card: Doubletake",
-            "Spell Card: Kunai",
-            "Spell Card: Scavenge",
-            "Spell Card: Shadow Shift",
-            "Spell Card: Swipe",
-        };
-        
-        private static readonly List<string> Mana = new List<string>()
-        {
-            "Spell Card: Blue Bullets",
-            "Spell Card: Boomerang",
-            "Spell Card: Focus",
-            "Spell Card: Mana Fusion",
-            "Spell Card: Mana Potion",
-            "Spell Card: Overload",
-            "Spell Card: Transfuse",
-            "Spell Card: Unleash",
-        };
-        
-        private static readonly List<string> Mine = new List<string>()
-        {
-            "Spell Card: Bomb Toss",
-            "Spell Card: Caltrops",
-            "Spell Card: Mine",
-            "Spell Card: Minefield",
-            "Spell Card: Spike Strip",
-            "Spell Card: Sweeper",
-        };
-        
-        private static readonly List<string> Poison = new List<string>()
-        {
-            "Spell Card: Acid Rain",
-            "Spell Card: Anubis",
-            "Spell Card: Backstab",
-            "Spell Card: Blood Shield",
-            "Spell Card: Booster Shot",
-            "Spell Card: Detox",
-            "Spell Card: Pandemic",
-            "Spell Card: Poison Dart",
-            "Spell Card: Poison Tails",
-            "Spell Card: Slice",
-            "Spell Card: Sludge Bomb",
-            "Spell Card: Smog",
-            "Spell Card: Twoxin",
-            "Spell Card: Venoshock",
-        };
-        
-        private static readonly List<string> Projectile = new List<string>()
-        {
-            "Spell Card: Amalgam",
-            "Spell Card: Bow Snipe",
-            "Spell Card: Double Tap",
-            "Spell Card: Hired Gun",
-            "Spell Card: Incline",
-            "Spell Card: Ping",
-            "Spell Card: Skipper",
-            "Spell Card: Super Minnie Gun",
-        };
-        
-        private static readonly List<string> Relocation = new List<string>()
-        {
-            "Spell Card: Air Slash",
-            "Spell Card: Align",
-            "Spell Card: Fadeaway",
-            "Spell Card: Flurry",
-            "Spell Card: Inverter",
-            "Spell Card: Knock Down",
-            "Spell Card: Monsoon",
-            "Spell Card: Northwind",
-            "Spell Card: Pull",
-            "Spell Card: Push Up",
-            "Spell Card: Upwind",
-            "Spell Card: Warp Rays",
-            "Spell Card: Wobble",
-        };
-        
-        private static readonly List<string> Ring = new List<string>()
-        {
-            "Spell Card: Charge Ring",
-            "Spell Card: Collect Ring",
-            "Spell Card: Diamond Ring",
-            "Spell Card: Empower Ring",
-            "Spell Card: Sapphire Ring",
-        };
-        
-        private static readonly List<string> Root = new List<string>()
-        {
-            "Spell Card: Claw Traps",
-            "Spell Card: Entangle",
-            "Spell Card: Missiletoe",
-            "Spell Card: Sword Row",
-            "Spell Card: Swords of Light",
-            "Spell Card: Weed Wacker",
-            "Spell Card: Wreath",
-        };
-        
-        private static readonly List<string> Sawblade = new List<string>()
-        {
-            "Spell Card: Glaive",
-            "Spell Card: Power Saws",
-            "Spell Card: Sawstorm",
-            "Spell Card: Shattersaw",
-        };
-        
-        private static readonly List<string> Scaling = new List<string>()
-        {
-            "Spell Card: Ambient Burst",
-            "Spell Card: Energizer",
-            "Spell Card: Sera Cannon",
-            "Spell Card: Soul Fire",
-            "Spell Card: Viruspell",
-        };
-        
-        private static readonly List<string> Shield = new List<string>()
-        {
-            "Spell Card: Absorb",
-            "Spell Card: Blessing of Susano'o",
-            "Spell Card: Blink",
-            "Spell Card: Corset",
-            "Spell Card: Downfall",
-            "Spell Card: Fate Shield",
-            "Spell Card: Forte",
-            "Spell Card: Haven",
-            "Spell Card: Iron Will",
-            "Spell Card: Miss-Me Shield",
-            "Spell Card: Reflector",
-            "Spell Card: Shield Catch",
-            "Spell Card: Shields Up",
-            "Spell Card: Shield Throw",
-            "Spell Card: Stasis",
-            "Spell Card: Steel Skin",
-            "Spell Card: Stinger",
-        };
-        
-        private static readonly List<string> Shuffle = new List<string>()
-        {
-            "Spell Card: Blade Bay",
-            "Spell Card: Preload",
-            "Spell Card: Sleight",
-        };
-        
-        private static readonly List<string> Solar = new List<string>()
-        {
-            "Spell Card: Solar Charge",
-            "Spell Card: Sunshine",
-            "Spell Card: Sunbeamer",
-        };
-        
-        private static readonly List<string> Summon = new List<string>()
-        {
-            "Spell Card: Beacon",
-            "Spell Card: Beam Crystals",
-            "Spell Card: Blast Crystals",
-            "Spell Card: Bombard",
-            "Spell Card: Castle",
-            "Spell Card: Cross Turret",
-            "Spell Card: Grail",
-            "Spell Card: Gun Turret",
-            "Spell Card: Laser Turret",
-            "Spell Card: Mana Lattice",
-            "Spell Card: Monument",
-            "Spell Card: Resonate",
-            "Spell Card: Salvage",
-            "Spell Card: Shard Toss",
-            "Spell Card: Shieldgen",
-            "Spell Card: Sidewinder",
-            "Spell Card: Silo",
-            "Spell Card: Turret SD",
-            "Spell Card: Volley",
-            "Spell Card: Wall",
-        };
-        
-        private static readonly List<string> Trinity = new List<string>()
-        {
-            "Spell Card: Mana Steal",
-            "Spell Card: Meditate",
-            "Spell Card: Minnie Gun",
-            "Spell Card: Sequencer",
-            "Spell Card: Sustain",
-            "Spell Card: Tri Force",
-            "Spell Card: Tri Rag",
-            "Spell Card: Tri Shot",
-            "Spell Card: Trisect",
-        };
-        
-        private static readonly List<string> Wonder = new List<string>()
-        {
-            "Spell Card: Wonder",
-        };
-        
-        public static readonly Dictionary<string, List<string>> APPacktoAPSpells = new Dictionary<string, List<string>>()
-        {
-            { "Spell Booster Pack: AoE", AoE },
-            { "Spell Booster Pack: Beam", Beam },
-            { "Spell Booster Pack: Blade", Blade },
-            { "Spell Booster Pack: Chrono", Chrono },
-            { "Spell Booster Pack: Crack", Crack },
-            { "Spell Booster Pack: BigDeck", BigDeck },
-            { "Spell Booster Pack: Bouncy", Bouncy },
-            { "Spell Booster Pack: Flame", Flame },
-            { "Spell Booster Pack: Fling", Fling },
-            { "Spell Booster Pack: Flow", Flow },
-            { "Spell Booster Pack: Fragile", Fragile },
-            { "Spell Booster Pack: Frost", Frost },
-            { "Spell Booster Pack: Health", Health },
-            { "Spell Booster Pack: Indirect", Indirect },
-            { "Spell Booster Pack: Invade", Invade },
-            { "Spell Booster Pack: Jam", Jam },
-            { "Spell Booster Pack: Kunai", Kunai },
-            { "Spell Booster Pack: Mana", Mana },
-            { "Spell Booster Pack: Mine", Mine },
-            { "Spell Booster Pack: Poison", Poison },
-            { "Spell Booster Pack: Projectile", Projectile },
-            { "Spell Booster Pack: Relocation", Relocation },
-            { "Spell Booster Pack: Ring", Ring },
-            { "Spell Booster Pack: Root", Root },
-            { "Spell Booster Pack: Sawblade", Sawblade },
-            { "Spell Booster Pack: Scaling", Scaling },
-            { "Spell Booster Pack: Shield", Shield },
-            { "Spell Booster Pack: Shuffle", Shuffle },
-            { "Spell Booster Pack: Solar", Solar },
-            { "Spell Booster Pack: Summon", Summon },
-            { "Spell Booster Pack: Trinity", Trinity },
-            { "Spell Booster Pack: Wonder", Wonder },
-        };
+        public static readonly Dictionary<string, List<string>> APBrandRarityToAPSpells =
+            new Dictionary<string, List<string>>()
+            {
+                { "Brand Rarity Unlock: Common Anima", Anima.GetRange(0, 8) },
+                { "Brand Rarity Unlock: Rare Anima", Anima.GetRange(8, 12) },
+                { "Brand Rarity Unlock: Epic Anima", Anima.GetRange(20, 8) },
+                { "Brand Rarity Unlock: Legendary Anima", Anima.GetRange(28, 3) },
+                { "Brand Rarity Unlock: Calamity Anima", Anima.GetRange(31, 2) },
+                
+                { "Brand Rarity Unlock: Common Convergence", Convergence.GetRange(0, 6) },
+                { "Brand Rarity Unlock: Rare Convergence", Convergence.GetRange(6, 5) },
+                { "Brand Rarity Unlock: Epic Convergence", Convergence.GetRange(11, 8) },
+                { "Brand Rarity Unlock: Legendary Convergence", Convergence.GetRange(19, 2) },
+                { "Brand Rarity Unlock: Calamity Convergence", Convergence.GetRange(21, 2) },
+                
+                { "Brand Rarity Unlock: Common Doublelift", Doublelift.GetRange(0, 3) },
+                { "Brand Rarity Unlock: Rare Doublelift", Doublelift.GetRange(3, 6) },
+                { "Brand Rarity Unlock: Epic Doublelift", Doublelift.GetRange(9, 5) },
+                { "Brand Rarity Unlock: Legendary Doublelift", Doublelift.GetRange(14, 6) },
+                { "Brand Rarity Unlock: Calamity Doublelift", Doublelift.GetRange(20, 4) },
+                
+                { "Brand Rarity Unlock: Common Glimmer", Glimmer.GetRange(0, 3)},
+                { "Brand Rarity Unlock: Rare Glimmer", Glimmer.GetRange(3, 6)},
+                { "Brand Rarity Unlock: Epic Glimmer", Glimmer.GetRange(9, 3)},
+                { "Brand Rarity Unlock: Legendary Glimmer", Glimmer.GetRange(12, 5)},
+                { "Brand Rarity Unlock: Calamity Glimmer", Glimmer.GetRange(17, 3)},
+                
+                { "Brand Rarity Unlock: Common Hearth", Hearth.GetRange(0, 8)},
+                { "Brand Rarity Unlock: Rare Hearth", Hearth.GetRange(8, 11)},
+                { "Brand Rarity Unlock: Epic Hearth", Hearth.GetRange(19, 4)},
+                { "Brand Rarity Unlock: Legendary Hearth", Hearth.GetRange(23, 2)},
+                { "Brand Rarity Unlock: Calamity Hearth", Hearth.GetRange(25, 2)},
+                
+                { "Brand Rarity Unlock: Common Hexawan", Hexawan.GetRange(0, 5)},
+                { "Brand Rarity Unlock: Rare Hexawan", Hexawan.GetRange(5, 13)},
+                { "Brand Rarity Unlock: Epic Hexawan", Hexawan.GetRange(18, 6)},
+                { "Brand Rarity Unlock: Legendary Hexawan", Hexawan.GetRange(24, 4)},
+                { "Brand Rarity Unlock: Calamity Hexawan", Hexawan.GetRange(28, 1)},
+                
+                { "Brand Rarity Unlock: Common Kinesys", Kinesys.GetRange(0, 5)},
+                { "Brand Rarity Unlock: Rare Kinesys", Kinesys.GetRange(5, 11)},
+                { "Brand Rarity Unlock: Epic Kinesys", Kinesys.GetRange(16, 6)},
+                { "Brand Rarity Unlock: Legendary Kinesys", Kinesys.GetRange(22, 2)},
+                { "Brand Rarity Unlock: Calamity Kinesys", Kinesys.GetRange(24, 1)},
+                
+                { "Brand Rarity Unlock: Common Miseri", Miseri.GetRange(0, 4)},
+                { "Brand Rarity Unlock: Rare Miseri", Miseri.GetRange(4, 13)},
+                { "Brand Rarity Unlock: Epic Miseri", Miseri.GetRange(17, 8)},
+                { "Brand Rarity Unlock: Legendary Miseri", Miseri.GetRange(25, 1)},
+                { "Brand Rarity Unlock: Calamity Miseri", Miseri.GetRange(26, 1)},
+                
+                { "Brand Rarity Unlock: Common Phalanx", Phalanx.GetRange(0, 6)},
+                { "Brand Rarity Unlock: Rare Phalanx", Phalanx.GetRange(6, 7)},
+                { "Brand Rarity Unlock: Epic Phalanx", Phalanx.GetRange(13, 5)},
+                { "Brand Rarity Unlock: Legendary Phalanx", Phalanx.GetRange(18, 3)},
+                { "Brand Rarity Unlock: Calamity Phalanx", Phalanx.GetRange(21, 2)},
+                
+                { "Brand Rarity Unlock: Common Slashfik", Slashfik.GetRange(0, 6)}, // incl. Kunai
+                { "Brand Rarity Unlock: Rare Slashfik", Slashfik.GetRange(6, 5)},
+                { "Brand Rarity Unlock: Epic Slashfik", Slashfik.GetRange(11, 3)},
+                { "Brand Rarity Unlock: Legendary Slashfik", Slashfik.GetRange(14, 4)},
+                { "Brand Rarity Unlock: Calamity Slashfik", Slashfik.GetRange(18, 6)},
+            };
     }
 }

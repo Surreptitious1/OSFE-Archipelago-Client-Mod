@@ -39,13 +39,22 @@ public class CardLock
         private static void Prefix(HeroDisplay __instance, ref BeingObject beingObj)
         {
             // Replace the default deck with the randomized one
-            beingObj.deck.Clear();
             var kit = HeroKitLookup.OSFEBeingIdToHeroKit[beingObj.beingID];
             if (AP.I.custom_spells.ContainsKey(kit))
             {
+                beingObj.deck.Clear();
                 foreach (var spell in AP.I.custom_spells[kit])
                 {
                     beingObj.deck.Add(spell);
+                }
+            }
+
+            if (AP.I.custom_artifacts.ContainsKey(kit))
+            {
+                beingObj.artifacts.Clear();
+                foreach (var art in AP.I.custom_artifacts[kit])
+                {
+                    beingObj.artifacts.Add(new ArtData(S.I.itemMan.artDictionary[art]));
                 }
             }
 

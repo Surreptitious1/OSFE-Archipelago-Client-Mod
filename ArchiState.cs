@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Archipelago.MultiClient.Net.Models;
 using ArchipelagoClient.Data;
+using Sirenix.Utilities;
 using UnityEngine;
 
 namespace ArchipelagoClient {
@@ -14,6 +15,7 @@ namespace ArchipelagoClient {
         // Items
         public List<HeroKit> unlocked_chars = new List<HeroKit>();
         public List<String> unlocked_spells = new List<string>();
+        public List<String> unlocked_artifacts = new List<string>();
         
         // Locations
         public List<String> boss_spares = new List<string>();
@@ -26,8 +28,10 @@ namespace ArchipelagoClient {
 
         private Dictionary<string, object> slotData = null;
         public Dictionary<HeroKit, List<string>> custom_spells = new Dictionary<HeroKit, List<string>>();
+        public Dictionary<HeroKit, List<string>> custom_artifacts = new Dictionary<HeroKit, List<string>>();
         
         public Dictionary<string, SpellObject> original_spells = new Dictionary<string, SpellObject>();
+        public Dictionary<string, ArtifactObject> original_artifacts = new Dictionary<string, ArtifactObject>();
 
         public HeroKit? current_char = null;
         public bool in_run = false; // Refers to OSFE run, not an Archipelago run
@@ -63,6 +67,11 @@ namespace ArchipelagoClient {
             return unlocked_spells.Contains(spell);
         }
 
+        public bool ArtifactUnlocked(string art)
+        {
+            return unlocked_artifacts.Contains(art);
+        }
+
         public void StartRun(RunCtrl runCtrl)
         {
             this.current_char = HeroKitLookup.OSFEBeingIdToHeroKit[runCtrl.ctrl.currentHeroObj.beingID];
@@ -84,14 +93,24 @@ namespace ArchipelagoClient {
             {
                 string character = character_raw.Trim().Trim('"');
                 HeroKit kit = HeroKit.FromString(character);
+                
                 string spells_raw = slotData[$"{kit.ToString()}_starting_spells"].ToString().Trim('[',']');
                 List<string> spells = new List<string>();
                 foreach (var spell_raw in spells_raw.Split(','))
                 {
                     string spell = spell_raw.Trim().Trim('"');
-                    spells.Add(SpellLookup.APSpelltoOSFESpell[$"Spell Card: {spell}"]);
+                    spells.Add(SpellLookup.APSpellToOSFESpell[$"Spell Card: {spell}"]);
                 }
                 custom_spells.Add(kit, spells);
+                
+                string arts_raw = slotData[$"{kit.ToString()}_starting_artifacts"].ToString().Trim('[',']');
+                List<string> arts = new List<string>();
+                foreach (var art_raw in arts_raw.Split(','))
+                {
+                    string art = art_raw.Trim().Trim('"');
+                    arts.Add(ArtifactLookup.APArtToOSFEArt[$"Artifact Unlock: {art}"]);
+                }
+                custom_artifacts.Add(kit, arts);
             }
             
             foreach (var obj in slotData.Keys)
@@ -113,9 +132,15 @@ namespace ArchipelagoClient {
                 case "Brand Unlock":
                     UnlockBrand(item);
                     return;
+                case "Brand Rarity Unlock":
+                    UnlockBrandRarity(item);
+                    return;
                 //TODO: hell pass
                 case "Artifact Unlock":
                     UnlockArtifact(item);
+                    return;
+                case "Artifact Rarity Unlock":
+                    UnlockArtifactRarity(item);
                     return;
                 default:
                     Debug.Log("unknown item: " + item.ItemDisplayName);
@@ -135,6 +160,15 @@ namespace ArchipelagoClient {
             S.I.itemMan.playerFullSpellList = S.I.itemMan.spellDictionary.Values.Where<SpellObject>((Func<SpellObject, bool>) (t => t.tags.Contains(Tag.Player))).ToList<SpellObject>();
             S.I.itemMan.playerSpellList = S.I.itemMan.playerFullSpellList.ToList(); // skip the unlock level filter
             S.I.itemMan.unobtainedPlayerSpellList = new List<SpellObject>((IEnumerable<SpellObject>) S.I.itemMan.playerSpellList);
+        }
+
+        public void FixupArtLists()
+        {
+             S.I.itemMan.baseArtList = S.I.itemMan.artDictionary.Values.Where<ArtifactObject>((Func<ArtifactObject, bool>) (t => t.tags.Contains(Tag.Base))).ToList<ArtifactObject>();
+             S.I.itemMan.playerFullArtList = S.I.itemMan.artDictionary.Values.Where<ArtifactObject>((Func<ArtifactObject, bool>) (t => t.tags.Contains(Tag.Player) && !t.tags.Contains(Tag.Cpu) && !t.tags.Contains(Tag.Starting))).ToList<ArtifactObject>();
+             S.I.itemMan.nonBaseArtList = S.I.itemMan.playerFullArtList.Where<ArtifactObject>((Func<ArtifactObject, bool>) (t => !t.tags.Contains(Tag.Base))).ToList<ArtifactObject>(); // Again, ignore unlock level
+             S.I.itemMan.buffList = S.I.itemMan.artDictionary.Values.Where<ArtifactObject>((Func<ArtifactObject, bool>) (t => t.tags.Contains(Tag.Buff))).ToList<ArtifactObject>();
+             S.I.itemMan.loopMutationList = S.I.itemMan.artDictionary.Values.Where<ArtifactObject>((Func<ArtifactObject, bool>) (t => t.tags.Contains(Tag.LoopMutation))).ToList<ArtifactObject>();
         }
 
         // MUST be called from a hook (Unity "main thread"), NOT from the multiworld server's callback
@@ -177,25 +211,54 @@ namespace ArchipelagoClient {
 
         private void UnlockCard(ItemInfo item)
         {
-            String osfe_spell = SpellLookup.APSpelltoOSFESpell[item.ItemDisplayName];
+            String osfe_spell = SpellLookup.APSpellToOSFESpell[item.ItemDisplayName];
             UnlockSpell(osfe_spell);
             FixupSpellLists();
         }
 
         private void UnlockBrand(ItemInfo item)
         {
-            List<String> ap_spells = SpellLookup.APBrandtoAPSpells[item.ItemDisplayName];
+            List<String> ap_spells = SpellLookup.APBrandToAPSpells[item.ItemDisplayName];
             foreach (String ap_spell in ap_spells)
             {
-                String osfe_spell = SpellLookup.APSpelltoOSFESpell[ap_spell];
+                String osfe_spell = SpellLookup.APSpellToOSFESpell[ap_spell];
                 UnlockSpell(osfe_spell);
             }
             FixupSpellLists();
         }
-        
-        private void UnlockArtifact(ItemInfo item)
+
+        private void UnlockBrandRarity(ItemInfo item)
         {
-            throw new NotImplementedException();
+            List<String> ap_spells = SpellLookup.APBrandRarityToAPSpells[item.ItemDisplayName];
+            foreach (String ap_spell in ap_spells)
+            {
+                String osfe_spell = SpellLookup.APSpellToOSFESpell[ap_spell];
+                UnlockSpell(osfe_spell);
+            }
+            FixupSpellLists();
+        }
+
+        private void _UnlockArtifact(String art)
+        {
+            unlocked_artifacts.Add(art);
+            S.I.itemMan.artDictionary[art] = original_artifacts[art]; 
+        }
+        
+        private void UnlockArtifact(ItemInfo art)
+        {
+            String osfe_art = ArtifactLookup.APArtToOSFEArt[art.ItemDisplayName];
+            _UnlockArtifact(osfe_art);
+            FixupArtLists();
+        }
+
+        private void UnlockArtifactRarity(ItemInfo item)
+        {
+            List<string> arts = ArtifactLookup.APArtRarityToOSFEArt[item.ItemDisplayName];
+            foreach (var art in arts)
+            {
+                _UnlockArtifact(art);
+            }
+            FixupArtLists();
         }
 
         public bool IsGoaled()
@@ -205,15 +268,22 @@ namespace ArchipelagoClient {
                 return false;
             }
 
-            int total_wins = int.Parse(slotData["total_wins"].ToString());
+            int character_wins = int.Parse(slotData["character_wins"].ToString());
             int neutral_wins = int.Parse(slotData["neutral_wins"].ToString());
             int pacifist_wins = int.Parse(slotData["pacifist_wins"].ToString());
             int genocide_wins = int.Parse(slotData["genocide_wins"].ToString());
 
+            HashSet<HeroKit> unique_winners = new HashSet<HeroKit>();
+            unique_winners.AddRange(neutral_winners);
+            unique_winners.AddRange(pacifist_winners);
+            unique_winners.AddRange(genocide_winners);
+            
+            Debug.Log($"IsGoaled:\nNeutral[{this.neutral_winners.Count}/{neutral_wins}\nPacifist[{this.pacifist_winners.Count}/{pacifist_wins}]\nGenocide[{this.genocide_winners.Count}/{genocide_wins}]\nCharacter[{unique_winners.Count}/{character_wins}]");
+
             return this.neutral_winners.Count >= neutral_wins &&
                    this.pacifist_winners.Count >= pacifist_wins &&
                    this.genocide_winners.Count >= genocide_wins &&
-                   this.neutral_winners.Count + this.pacifist_winners.Count + this.genocide_winners.Count > total_wins;
+                   unique_winners.Count >= character_wins;
         }
     }
 }

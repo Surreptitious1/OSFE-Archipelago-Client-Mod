@@ -12,14 +12,34 @@ namespace ArchipelagoClient
     {
         static void Prepare()
         {
-            foreach (var obj in S.I.spCtrl.heroCampaignList)
+            /*
+            var spells = (SpellLookup.APBrandRarityToAPSpells["Brand Rarity Unlock: Common Anima"]);
+            foreach (var spell in spells)
             {
-                //Debug.Log(obj.nameString);
-                foreach (var id in S.I.heCtrl.HeroAltList(obj.nameString))
-                {
-                    Debug.Log(id.beingID);
-                }
+                Debug.Log("common: " + spell);
             }
+            spells = SpellLookup.APBrandRarityToAPSpells["Brand Rarity Unlock: Rare Anima"];
+            foreach (var spell in spells)
+            {
+                Debug.Log("rare " + spell);
+            }
+            spells = SpellLookup.APBrandRarityToAPSpells["Brand Rarity Unlock: Epic Anima"];
+            foreach (var spell in spells)
+            {
+                Debug.Log("epic " + spell);
+            }
+            spells = SpellLookup.APBrandRarityToAPSpells["Brand Rarity Unlock: Legendary Anima"];
+            foreach (var spell in spells)
+            {
+                Debug.Log("legendary " + spell);
+            }
+            spells = SpellLookup.APBrandRarityToAPSpells["Brand Rarity Unlock: Calamity Anima"];
+            foreach (var spell in spells)
+            {
+                Debug.Log("calamity " + spell);
+            }
+            */
+            
             SaveDataCtrl.Set<int>("UnlockLevel", 50);
             S.I.unCtrl.UnlockAll();
             //TODO: duplicate install prevention

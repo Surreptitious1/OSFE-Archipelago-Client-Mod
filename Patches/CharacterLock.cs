@@ -55,6 +55,7 @@ class CharacterLock
                 __instance.tmpText.color = new Color(0.5f, 0.5f, 0.5f);
                 __instance.tmpText.text = "??????";
                 __instance.locked = true;
+                __instance.gameObject.SetActive(false); // Should also hide button?
             }
             else
             {

@@ -444,6 +444,7 @@
     <ItemGroup>
         <Compile Include="ArchiNet.cs" />
         <Compile Include="ArchiState.cs" />
+        <Compile Include="Data\ArtifactLookup.cs" />
         <Compile Include="Data\HeroKit.cs" />
         <Compile Include="Data\Spell.cs" />
         <Compile Include="Init.cs" />
