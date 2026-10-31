@@ -463,6 +463,7 @@
       <None Include="packages.config" />
     </ItemGroup>
     <ItemGroup>
+      <Content Include="LICENSE" />
       <Content Include="Script\Fixup.bat" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
