@@ -160,8 +160,8 @@ namespace ArchipelagoClient.Patches
                 locked_copy.shuffleTime = xd40.shuffleTime;
                 locked_copy.dropMultiplierAdd = xd40.dropMultiplierAdd;
                 locked_copy.lootDropsAdd = xd40.lootDropsAdd;
-                locked_copy.spell = xd40.spell;
-                locked_copy.artObj = xd40.artObj;
+                locked_copy.spell = "";
+                locked_copy.artObj = locked_copy;
                     
                 locked_copy.nameString = "[LOCKED] " +  original.nameString;
                 locked_copy.description = "Does nothing...? " + original.description;

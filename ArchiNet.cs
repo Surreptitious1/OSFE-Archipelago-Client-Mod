@@ -79,6 +79,8 @@ namespace ArchipelagoClient
         // Fetch server-side information and initialize AP state
         private void SessionConnected()
         {
+            AP.I.SetSessionSeed(session.RoomState.Seed);
+            // This needs to be ingested before getting any items
             AP.I.SetSlotData(session.DataStorage.GetSlotData());
             /* just let the server handle location id tracking and repeat send any dupes
             foreach (var location in session.Locations.AllLocationsChecked)
@@ -96,6 +98,10 @@ namespace ArchipelagoClient
             {
                 session.SetGoalAchieved();
             }
+            
+            AP.I.FixupSpellLists();
+            AP.I.FixupArtLists();
+            AP.I.FixupHellpassState();
         }
 
         public bool Connect(String url, String slot_name)
@@ -104,7 +110,7 @@ namespace ArchipelagoClient
             var res = session.TryConnectAndLogin(
                 "One Step From Eden",
                 slot_name,
-                ItemsHandlingFlags.IncludeStartingInventory
+                ItemsHandlingFlags.AllItems
                 );
             if (res.Successful)
             {

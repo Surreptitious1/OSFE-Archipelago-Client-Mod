@@ -42,6 +42,7 @@ namespace ArchipelagoClient
             
             SaveDataCtrl.Set<int>("UnlockLevel", 50);
             S.I.unCtrl.UnlockAll();
+            S.I.runCtrl.unlockedHellPassNum = 17;
             //TODO: duplicate install prevention
             //TODO: dllimport MultiClient
             Debug.Log("Archi Installed");

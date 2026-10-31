@@ -2,6 +2,7 @@
 
 using ArchipelagoClient;
 using HarmonyLib;
+using UnityEngine;
 
 public class RunTracking
 {
@@ -9,9 +10,30 @@ public class RunTracking
     [HarmonyPatch("StartCampaign")]
     public class StartCampaignPatch
     {
-        public static void Prefix(RunCtrl __instance)
+        // Postfix since StartCampaign may call DeleteRun
+        public static void Postfix(RunCtrl __instance)
         {
-            AP.I.StartRun(__instance);
+            AP.I.StartRun(__instance.ctrl.currentHeroObj.beingID);
+        }
+    }
+
+    [HarmonyPatch(typeof(RunCtrl))]
+    [HarmonyPatch("CreateRunFromSave")]
+    public class LoadRunPatch
+    {
+        public static void Postfix(RunCtrl __instance)
+        {
+            AP.I.StartRun(__instance.ctrl.currentHeroObj.beingID);
+        }
+    }
+    
+    [HarmonyPatch(typeof(RunCtrl))]
+    [HarmonyPatch("DeleteRun")]
+    public class DeleteRunPatch
+    {
+        private static void Prefix(RunCtrl __instance)
+        {
+            AP.I.EndRun();
         }
     }
     
@@ -33,6 +55,28 @@ public class RunTracking
                 ArchiNet.I.SendLocation($"[{AP.I.current_char.ToString()}] World {world}, Zone {zone}");
             }
             AP.I.FixupCurrentDeck();
+            AP.I.FixupCurrentArts();
+            AP.I.FixupCurrentHellpasses();
+        }
+    }
+
+    [HarmonyPatch(typeof(BossSerif))]
+    [HarmonyPatch("GateExecution")]
+    public class NeutralVictoryPatch
+    {
+        private static void Prefix(BossSerif __instance)
+        {
+            AP.I.WonRun(Ending.Neutral);
+        }
+    }
+
+    [HarmonyPatch(typeof(BC))]
+    [HarmonyPatch("Victory")]
+    public class VictoryPatch
+    {
+        private static void Prefix(BC __instance, ref Ending endingType)
+        {
+            AP.I.WonRun(endingType);
         }
     }
 }

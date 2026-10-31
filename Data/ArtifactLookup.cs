@@ -69,6 +69,7 @@ namespace ArchipelagoClient.Data
             { "Artifact Unlock: Viral Transmitter", "ViralTransmitter" },
             { "Artifact Unlock: Water Wheel", "WaterWheel" },
             { "Artifact Unlock: XD-40", "XD40" },
+            { "Artifact Unlock: Z-Cell", "ZCell" },
 
             // Rare
             { "Artifact Unlock: Acupuncture", "Acupuncture" },
@@ -120,7 +121,6 @@ namespace ArchipelagoClient.Data
             { "Artifact Unlock: Undershirt", "Undershirt" },
             { "Artifact Unlock: Vaccine", "Vaccine" },
             { "Artifact Unlock: Violet", "Violet" },
-            { "Artifact Unlock: Z-Cell", "ZCell" },
 
             // Epic
             { "Artifact Unlock: Aether", "Aether" },
@@ -212,8 +212,8 @@ namespace ArchipelagoClient.Data
             new Dictionary<string, List<string>>()
             {
                 { "Artifact Rarity Unlock: Base", _allArtifacts.Skip(0).Take(3).ToList() },
-                { "Artifact Rarity Unlock: Common", _allArtifacts.Skip(3).Take(55).ToList() },
-                { "Artifact Rarity Unlock: Rare", _allArtifacts.Skip(58).Take(50).ToList() },
+                { "Artifact Rarity Unlock: Common", _allArtifacts.Skip(3).Take(56).ToList() },
+                { "Artifact Rarity Unlock: Rare", _allArtifacts.Skip(59).Take(49).ToList() },
                 { "Artifact Rarity Unlock: Epic", _allArtifacts.Skip(108).Take(50).ToList() },
                 { "Artifact Rarity Unlock: Legendary", _allArtifacts.Skip(158).Take(29).ToList() },
             };

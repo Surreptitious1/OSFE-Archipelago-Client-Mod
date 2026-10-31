@@ -50,7 +50,8 @@ class CharacterLock
             __instance.heroObj = theHeroObj;
             __instance.back = (UIButton) theHeroButton;
             // Look at ap-unlocked kits rather than save data
-            if (!AP.I.unlocked_chars.Contains(HeroKitLookup.OSFEBeingIdToHeroKit[__instance.heroObj.beingID]))
+            var kit = HeroKitLookup.OSFEBeingIdToHeroKit[__instance.heroObj.beingID];
+            if (!AP.I.unlocked_chars.Contains(kit))
             {
                 __instance.tmpText.color = new Color(0.5f, 0.5f, 0.5f);
                 __instance.tmpText.text = "??????";
@@ -59,10 +60,30 @@ class CharacterLock
             }
             else
             {
+                // prefix kit names with win info
+                string prefix = "";
+                if (AP.I.pacifist_winners.Contains(kit))
+                {
+                    prefix += "P";
+                }
+                if (AP.I.neutral_winners.Contains(kit))
+                {
+                    prefix += "N";
+                }
+                if (AP.I.genocide_winners.Contains(kit))
+                {
+                    prefix += "G";
+                }
+
+                if (prefix != "")
+                {
+                    prefix = $"[{prefix}] ";
+                }
+                
                 __instance.heroCtrl.unlockedHeroAltButtons.Add(__instance);
                 __instance.locked = false;
                 __instance.tmpText.color = Color.white;
-                __instance.tmpText.text = __instance.heroObj.title;
+                __instance.tmpText.text = prefix + __instance.heroObj.title;
                 __instance.lockImage.alpha = 0.0f;
             }
 
