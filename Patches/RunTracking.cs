@@ -57,6 +57,19 @@ public class RunTracking
             AP.I.FixupCurrentDeck();
             AP.I.FixupCurrentArts();
             AP.I.FixupCurrentHellpasses();
+
+            if (!AP.I.did_run_init)
+            {
+                Debug.Log("player");
+                S.I.batCtrl.currentPlayer.health.SetMax(S.I.batCtrl.currentPlayer.health.max + AP.I.bonus_health);
+                Debug.Log("sera");
+                S.I.shopCtrl.ModifySera(AP.I.bonus_money);
+                Debug.Log("uppy");
+                S.I.shopCtrl.ModifyUpgraderCount(AP.I.bonus_upgrader);
+                Debug.Log("rem");
+                S.I.shopCtrl.ModifyRemovalCount(AP.I.bonus_remover);
+                AP.I.did_run_init = true;
+            }
         }
     }
 

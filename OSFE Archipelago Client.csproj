@@ -453,6 +453,7 @@
         <Compile Include="Patches\CharacterLock.cs" />
         <Compile Include="Patches\Cheats.cs" />
         <Compile Include="Patches\CustomItems.cs" />
+        <Compile Include="Patches\FillerBuffs.cs" />
         <Compile Include="Patches\HellPassLock.cs" />
         <Compile Include="Patches\RunTracking.cs" />
         <Compile Include="Patches\CustomUI.cs" />

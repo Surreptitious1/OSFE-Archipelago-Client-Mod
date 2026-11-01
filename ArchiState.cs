@@ -25,6 +25,19 @@ namespace ArchipelagoClient {
         public List<String> unlocked_artifacts = new List<string>();
         public List<int> enabled_hellpasses = new List<int>();
         
+        // Filler stat buffs
+        public int bonus_health = 0;
+        public int mana_shards = 0; // 5 shards per gem
+        public float bonus_mana_regen = 0.0f;
+        public int bonus_atk_dmg = 0;
+        public int bonus_spell_power = 0;
+        public int bonus_defense = 0;
+        public float bonus_shuffle_speed = 0.0f; // subtracted from shuffle time
+        public int bonus_luck = 0;
+        public int bonus_money = 0; // starting money
+        public int bonus_upgrader = 0;
+        public int bonus_remover = 0;
+        
         // Goal
         public HashSet<HeroKit> pacifist_winners = new HashSet<HeroKit>();
         public HashSet<HeroKit> neutral_winners = new HashSet<HeroKit>();
@@ -41,6 +54,7 @@ namespace ArchipelagoClient {
 
         public HeroKit? current_char = null;
         public bool in_run = false; // Refers to OSFE run, not an Archipelago run
+        public bool did_run_init = false;
         
         private static readonly object initlock = new object();
         private static AP _AP = null;
@@ -82,6 +96,7 @@ namespace ArchipelagoClient {
         {
             this.current_char = HeroKitLookup.OSFEBeingIdToHeroKit[heroID];
             this.in_run = true;
+            this.did_run_init = false; // for fixups after initialization
             Debug.Log($"Started run as {current_char}");
         }
 
@@ -251,8 +266,79 @@ namespace ArchipelagoClient {
                 return;
             }
             
+            // Filler
+            switch (item.ItemDisplayName)
+            {
+                case "Bonus Max Health":
+                    bonus_health += 20;
+                    if (in_run)
+                    {
+                        S.I.batCtrl.currentPlayer.health.SetMax(S.I.batCtrl.currentPlayer.health.max + bonus_health);
+                    }
+                    // Handled in StartRun
+                    return;
+                case "Mana Shard":
+                    mana_shards++;
+                    // Handled by FillerBuffs::StatBuffs
+                    return;
+                case "Mana Thread":
+                    bonus_mana_regen += 0.02f;
+                    // Handled by FillerBuffs::StatBuffs
+                    return;
+                case "Atk Up":
+                    bonus_atk_dmg++;
+                    // Handled by FillerBuffs::StatBuffs
+                    return;
+                case "Spell Power Up":
+                    bonus_spell_power++;
+                    // Handled by FillerBuffs::StatBuffs
+                    return;
+                case "Defense Up":
+                    bonus_defense++;
+                    // Handled by FillerBuffs::StatBuffs
+                    return;
+                case "Shuffle Speed Boost":
+                    bonus_shuffle_speed += 0.2f;
+                    // Handled by FillerBuffs::StatBuffs
+                    return;
+                case "Bonus Loot Luck":
+                    bonus_luck++;
+                    // Handled by FillerBuffs::BonusLuck
+                    return;
+                case "Bonus Starting Sera":
+                    bonus_money += 10;
+                    if (in_run)
+                    {
+                        S.I.shopCtrl.ModifySera(10);
+                    }
+                    // Handled in StartRun
+                    return;
+                case "Starting Upgrader":
+                    bonus_upgrader++;
+                    if (in_run)
+                    {
+                        S.I.shopCtrl.ModifyUpgraderCount(1);
+                    }
+                    // Handled in StartRun
+                    return;
+                case "Starting Remover":
+                    bonus_remover++;
+                    if (in_run)
+                    {
+                        S.I.shopCtrl.ModifyRemovalCount(1);
+                    }
+                    // Handled in StartRun
+                    return;
+                case "5 Sera":
+                    if (!in_run)
+                    {
+                        return; // tough luck
+                    }
+                    S.I.shopCtrl.ModifySera(5);
+                    return;
+            }
+            
             Debug.Log($"Unknown item: {item.ItemDisplayName}");
-            // TODO: filler
         }
 
         private void UnlockHero(ItemInfo item)
