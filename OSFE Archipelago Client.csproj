@@ -451,6 +451,7 @@
         <Compile Include="Patches\BossMercy.cs" />
         <Compile Include="Patches\CardLock.cs" />
         <Compile Include="Patches\CharacterLock.cs" />
+        <Compile Include="Patches\Cheats.cs" />
         <Compile Include="Patches\CustomItems.cs" />
         <Compile Include="Patches\HellPassLock.cs" />
         <Compile Include="Patches\RunTracking.cs" />

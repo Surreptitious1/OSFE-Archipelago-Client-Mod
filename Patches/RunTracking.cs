@@ -60,16 +60,6 @@ public class RunTracking
         }
     }
 
-    [HarmonyPatch(typeof(BossSerif))]
-    [HarmonyPatch("GateExecution")]
-    public class NeutralVictoryPatch
-    {
-        private static void Prefix(BossSerif __instance)
-        {
-            AP.I.WonRun(Ending.Neutral);
-        }
-    }
-
     [HarmonyPatch(typeof(BC))]
     [HarmonyPatch("Victory")]
     public class VictoryPatch

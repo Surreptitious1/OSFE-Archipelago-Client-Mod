@@ -42,6 +42,7 @@ namespace ArchipelagoClient
             
             SaveDataCtrl.Set<int>("UnlockLevel", 50);
             S.I.unCtrl.UnlockAll();
+            SaveDataCtrl.Set<bool>("HazelQueen", true); // locking this is surely a typo in UnlockAll()
             S.I.runCtrl.unlockedHellPassNum = 17;
             //TODO: duplicate install prevention
             //TODO: dllimport MultiClient

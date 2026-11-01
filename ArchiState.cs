@@ -92,6 +92,7 @@ namespace ArchipelagoClient {
 
         public void WonRun(Ending ending)
         {
+            Debug.Log($"won run with ending {ending}");
             if (!in_run)
             {
                 Debug.Log("something called WonRun while not in a run");
@@ -105,15 +106,19 @@ namespace ArchipelagoClient {
                     case Ending.PacifistTrue:
                     case Ending.PacifistFalse:
                         this.pacifist_winners.Add(kit);
+                        SaveDataCtrl.Set<bool>($"{this.session_seed}_pacifist_win_{kit.ToString()}", true);
                         return;
                     case Ending.Genocide:
                         this.genocide_winners.Add(kit);
+                        SaveDataCtrl.Set<bool>($"{this.session_seed}_genocide_win_{kit.ToString()}", true);
                         return;
                     case Ending.Neutral:
                         this.neutral_winners.Add(kit);
+                        SaveDataCtrl.Set<bool>($"{this.session_seed}_neutral_win_{kit.ToString()}", true);
                         return;
                 }
                 Debug.Log($"bad ending? {ending}");
+                
                 return;
             }
             Debug.Log("something called WonRun with no current_char");
@@ -122,17 +127,6 @@ namespace ArchipelagoClient {
         public void SetSessionSeed(string seed)
         {
             this.session_seed = seed;
-            
-            var pacifist_winners = SaveDataCtrl.Get<HashSet<HeroKit>>($"{seed}_pacifist_winners");
-            var neutral_winners = SaveDataCtrl.Get<HashSet<HeroKit>>($"{seed}_neutral_winners");
-            var genocide_winners = SaveDataCtrl.Get<HashSet<HeroKit>>($"{seed}_genocide_winners");
-            
-            if (pacifist_winners != null)
-                this.pacifist_winners = pacifist_winners;
-            if (neutral_winners != null)
-                this.neutral_winners = neutral_winners;
-            if (genocide_winners != null)
-                this.genocide_winners = genocide_winners;
         }
 
         public void SetSlotData(Dictionary<string, object> slotData)
@@ -181,6 +175,19 @@ namespace ArchipelagoClient {
 
                     custom_artifacts.Add(kit, arts);
                 }
+
+                if (SaveDataCtrl.Get<bool>($"{this.session_seed}_pacifist_win_{kit.ToString()}", false))
+                {
+                    this.pacifist_winners.Add(kit);
+                }
+                if (SaveDataCtrl.Get<bool>($"{this.session_seed}_neutral_win_{kit.ToString()}", false))
+                {
+                    this.neutral_winners.Add(kit);
+                }
+                if (SaveDataCtrl.Get<bool>($"{this.session_seed}_genocide_win_{kit.ToString()}", false))
+                {
+                    this.genocide_winners.Add(kit);
+                }
             }
             
             HellPassMode hellpass_mode = (HellPassMode)int.Parse(slotData["hellpass_mode"].ToString());
@@ -212,7 +219,7 @@ namespace ArchipelagoClient {
         {
             if (this.slotData == null)
             {
-                Debug.Log("no slot data early return");
+                //Debug.Log("no slot data early return");
                 return;
             }
             Debug.Log($"Got {item.ItemDisplayName}");
